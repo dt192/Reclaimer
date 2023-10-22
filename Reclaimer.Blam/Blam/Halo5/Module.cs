@@ -98,9 +98,9 @@ namespace Reclaimer.Blam.Halo5
         /// Returns all tags matching the specified <paramref name="globalTagId"/> across this module and all linked modules.
         /// </summary>
         /// <param name="globalTagId">The global identifier used to identify the same tag across different modules.</param>
-        public IEnumerable<ModuleItem> FindAlternateTagInstances(int globalTagId)
+        public IReadOnlyList<ModuleItem> FindAlternateTagInstances(int globalTagId)
         {
-            return tagIndex.InstancesById.GetValueOrDefault(globalTagId);
+            return tagIndex.InstancesById.GetValueOrDefault(globalTagId)?.AsReadOnly();
         }
 
         /// <summary>

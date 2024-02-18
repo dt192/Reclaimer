@@ -1,15 +1,12 @@
 ﻿using Reclaimer.Blam.Common;
-using Reclaimer.Blam.Utilities;
 using Reclaimer.Geometry;
 using Reclaimer.IO;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Numerics;
 
 namespace Reclaimer.Blam.Halo5
 {
-    public partial class scenario_structure_bsp : ContentTagDefinition<Scene>, IContentProvider<Model>
+    public partial class scenario_structure_bsp : ContentTagDefinition<Scene>
     {
 
         public scenario_structure_bsp(ModuleItem item, MetadataHeader header)
@@ -49,16 +46,13 @@ namespace Reclaimer.Blam.Halo5
         
         #region IContentProvider
 
-        Model IContentProvider<Model>.GetContent() => GetModelContent();
-
-        public override Scene GetContent() => Scene.WrapSingleModel(GetModelContent());
+        public override Scene GetContent() => Scene.WrapSingleModel(GetModelContent(), BlamConstants.WorldUnitScale);
 
         private Model GetModelContent()
         {
             var geoParams = new Halo5GeometryArgs
             {
                 Module = Module,
-                ModuleItem = Item,
                 ResourcePolicy = ResourcePackingPolicy.SingleResource, // MeshResourcePackingPolicy, // we dont have the exact same block as the model, but i think we do have it in the render geo struct
                 //Regions = Regions,
                 Materials = Materials,
@@ -69,7 +63,6 @@ namespace Reclaimer.Blam.Halo5
             };
 
             var model = new Model { Name = Item.FileName };
-
 
             var clusterRegion = new ModelRegion { Name = BlamConstants.SbspClustersGroupName };
             clusterRegion.Permutations.AddRange(

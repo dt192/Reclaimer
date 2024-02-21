@@ -2,6 +2,7 @@
 using Reclaimer.Drawing;
 using Reclaimer.IO;
 using System.IO;
+using static Reclaimer.Blam.Halo5.detile;
 
 namespace Reclaimer.Blam.Halo5
 {
@@ -31,6 +32,15 @@ namespace Reclaimer.Blam.Halo5
 
             var resourceIndex = Module.Resources[Item.ResourceIndex] + index;
             var resource = Module.Items[resourceIndex]; //this will be the [bitmap resource handle*] tag
+
+            // we need to read some data (tilemode) from the intermediate resource file
+            byte tilemode = 0;
+            using (var reader = resource.CreateReader())
+            {
+                reader.Seek(resource.UncompressedHeaderSize + 32, SeekOrigin.Begin); // tilemode is the 32nd byte in the tagdata
+                tilemode = reader.ReadBytes(1)[0];
+            }
+
             if (resource.ResourceCount > 0)
             {
                 //get the last [bitmap resource handle*.chunk#] tag (mips from smallest to largest?)
@@ -53,6 +63,9 @@ namespace Reclaimer.Blam.Halo5
 
                 data = reader.ReadBytes((int)resource.TotalUncompressedSize);
             }
+
+            if (tilemode != 0) // then we need to detile the data so it comes out clean
+                detile_bitmap(data, data.Length, submap.Width, submap.Height, (short)submap.BitmapFormat, tilemode);
 
             //todo: cubemap check
             var format = TextureUtils.DXNSwap(submap.BitmapFormat, true);

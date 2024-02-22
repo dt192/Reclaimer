@@ -8,11 +8,9 @@ namespace Reclaimer.Blam.Halo5
 {
     public partial class scenario_structure_bsp : ContentTagDefinition<Scene>
     {
-
         public scenario_structure_bsp(ModuleItem item, MetadataHeader header)
             : base(item, header)
         { }
-
 
         //[Offset(24)] // sbsp dont got this?
         //public ResourcePackingPolicy MeshResourcePackingPolicy { get; set; }
@@ -31,11 +29,9 @@ namespace Reclaimer.Blam.Halo5
 
         [Offset(360)]
         public BlockCollection<MaterialBlock> Materials { get; set; }
-
         
         [Offset(700)]
         public BlockCollection<BspGeometryInstanceBlock> GeometryInstances { get; set; }
-
         
         [Offset(912)]
         public BlockCollection<SectionBlock> Sections { get; set; }
@@ -82,13 +78,6 @@ namespace Reclaimer.Blam.Halo5
                     instanceGroup.Select(i => new ModelPermutation
                     {
                         Name = i.Name,
-                        //Transform = new Matrix4x4(
-                        //    i.TransformForward.X, i.TransformForward.Y, i.TransformForward.Z, 0,
-                        //    i.TransformLeft.X, i.TransformLeft.Y, i.TransformLeft.Z, 0,
-                        //    i.TransformUp.X, i.TransformUp.Y, i.TransformUp.Z, 0,
-                        //    i.TransformPosition.X, i.TransformPosition.Y, i.TransformPosition.Z, 1
-                        //),
-                        //Scale = i.TransformScale,
 
                         Transform = new Matrix4x4(
                             i.forward1, i.forward2, i.forward3, 0,
@@ -150,7 +139,6 @@ namespace Reclaimer.Blam.Halo5
         //[Offset(0)]
         //public Vector3 TransformScale { get; set; }
 
-
         //[Offset(12)]
         //public Vector3 TransformForward { get; set; }
         //[Offset(24)]
@@ -159,7 +147,6 @@ namespace Reclaimer.Blam.Halo5
         //public Vector3 TransformUp { get; set; }
         //[Offset(48)]
         //public Vector3 TransformPosition { get; set; }
-
 
         [Offset(0)] public float scale1 { get; set; }
         [Offset(4)] public float scale2 { get; set; }

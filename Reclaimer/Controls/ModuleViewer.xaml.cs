@@ -223,6 +223,13 @@ namespace Reclaimer.Controls
         {
             var fileName = $"{item.TagName}.{item.ClassName}";
             var fileKey = $"Blam.{module.ModuleType}.{item.ClassCode}";
+
+            if (item.ClassName == null && item.GlobalTagId == -1)
+            {
+                fileName = item.TagName;
+                fileKey = $"Blam.{module.ModuleType}.$resource_chunk";
+            }
+
             return new OpenFileArgs(fileName, fileKey, Substrate.GetHostWindow(this), GetFileFormats(item).ToArray());
         }
 

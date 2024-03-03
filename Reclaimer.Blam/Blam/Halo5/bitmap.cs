@@ -65,7 +65,16 @@ namespace Reclaimer.Blam.Halo5
             }
 
             if (tilemode != 0) // then we need to detile the data so it comes out clean
-                detile_bitmap(data, data.Length, submap.Width, submap.Height, (short)submap.BitmapFormat, tilemode);
+            {
+                try
+                {
+                    detile_bitmap(data, data.Length, submap.Width, submap.Height, (short)submap.BitmapFormat, tilemode);
+                }
+                catch (DllNotFoundException ex)
+                {
+                    //fallback to raw bitmap if dll not found or failed to load
+                }
+            }
 
             //todo: cubemap check
             var format = TextureUtils.DXNSwap(submap.BitmapFormat, true);
